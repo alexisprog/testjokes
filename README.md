@@ -1,50 +1,195 @@
-# Welcome to your Expo app 👋
+# Chuck Norris Jokes App 💪
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil desarrollada con Expo que consume la API de Chuck Norris para mostrar chistes aleatorios, búsquedas y gestión de favoritos.
 
-## Get started
+## Ambiente de Desarrollo
 
-1. Install dependencies
+- Node.js: v18.x o superior
+- npm: v9.x o superior
+- Expo SDK: 50.0.0
+- React Native: 0.73.2
+- TypeScript: 5.3.0
 
-   ```bash
-   npm install
-   ```
+## Dependencias Principales
 
-2. Start the app
+- **UI/UX**:
 
-   ```bash
-    npx expo start
-   ```
+  - `react-native-paper`: ^5.12.3 (Sistema de diseño material)
+  - `react-native-safe-area-context`: ^4.8.2
+  - `@expo/vector-icons`: ^14.0.0
 
-In the output, you'll find options to open the app in a
+- **Navegación**:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+  - `expo-router`: ^3.4.6 (Navegación basada en archivos)
+  - `react-native-gesture-handler`: ^2.14.0
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Estado**:
 
-## Get a fresh project
+  - `zustand`: ^4.5.0 (Gestión de estado global)
+  - `@react-native-async-storage/async-storage`: ^1.21.0
 
-When you're ready, run:
+- **Autenticación**:
 
-```bash
-npm run reset-project
+  - `@react-native-firebase/app`: ^18.7.3
+  - `@react-native-firebase/auth`: ^18.7.3
+
+- **Red y Datos**:
+  - `axios`: ^1.6.7
+  - `@react-native-community/netinfo`: ^11.2.1
+
+## Estructura del Proyecto
+
+```
+src/
+├── components/          # Componentes reutilizables
+├── hooks/              # Hooks personalizados
+├── modules/            # Módulos principales de la aplicación
+│   ├── auth/          # Autenticación (login/registro)
+│   ├── home/          # Vista principal de categorías
+│   ├── favorites/     # Gestión de favoritos
+│   ├── search/        # Búsqueda de chistes
+│   └── profile/       # Perfil de usuario
+├── services/          # Servicios (API, auth, etc.)
+└── store/             # Estados globales (Zustand)
+
+app/                   # Rutas de la aplicación (Expo Router)
+├── (app)/            # Rutas autenticadas
+│   └── (tabs)/       # Navegación por tabs
+└── _layout.tsx       # Layout principal
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Módulos Principales
 
-## Learn more
+### 1. Autenticación (`src/modules/auth/`)
 
-To learn more about developing your project with Expo, look at the following resources:
+- Login con email/contraseña
+- Registro de nuevos usuarios
+- Autenticación biométrica
+- Persistencia de sesión
+- Validaciones con Formik y Yup
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 2. Categorías (`src/modules/home/`)
 
-## Join the community
+- Lista de categorías de chistes
+- Chistes aleatorios por categoría
+- Interfaz de diálogo para mostrar chistes
+- Opción para agregar a favoritos
 
-Join our community of developers creating universal apps.
+### 3. Favoritos (`src/modules/favorites/`)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Gestión de chistes favoritos
+- Persistencia local con AsyncStorage
+- Swipe para eliminar/compartir
+- Pull-to-refresh para actualizar
+
+### 4. Búsqueda (`src/modules/search/`)
+
+- Búsqueda en tiempo real
+- Debounce para optimizar llamadas
+- Validación de términos de búsqueda
+- Lista optimizada de resultados
+
+### 5. Perfil (`src/modules/profile/`)
+
+- Información del usuario
+- Gestión de sesión
+- Configuración de biometría
+- Cierre de sesión
+
+## Características Técnicas
+
+### Gestión de Estado
+
+- Zustand para estado global
+- Stores modulares:
+  - `useAuthStore`: Autenticación
+  - `useErrorStore`: Manejo de errores
+  - `useCategoriesStore`: Categorías y favoritos
+  - `useNetworkStore`: Estado de conectividad
+
+### Networking
+
+- Axios para peticiones HTTP
+- Interceptores para manejo de errores
+- Validación de conectividad
+- Caché de respuestas
+
+### UI/UX
+
+- Tema claro/oscuro
+- SafeArea adaptativo
+- Animaciones nativas
+- Feedback táctil
+- Indicadores de carga
+- Manejo de errores visual
+
+### Seguridad
+
+- Autenticación Firebase
+- Biometría local
+- Encriptación de credenciales
+- Validación de tokens
+
+## Instalación y Ejecución
+
+1. Clonar el repositorio:
+
+```bash
+git clone <repository-url>
+```
+
+2. Instalar dependencias:
+
+```bash
+npm install
+```
+
+3. Iniciar el proyecto:
+
+```bash
+npx expo start
+```
+
+## Scripts Disponibles
+
+- `npm start`: Inicia el servidor de desarrollo
+- `npm run android`: Ejecuta la app en Android
+- `npm run ios`: Ejecuta la app en iOS
+- `npm run web`: Ejecuta la versión web
+- `npm run lint`: Ejecuta el linter
+- `npm run test`: Ejecuta los tests
+
+## Configuración de Desarrollo
+
+1. Configurar variables de entorno:
+
+   - Crear archivo `.env` basado en `.env.example`
+   - Configurar credenciales de Firebase
+
+2. Configurar Firebase:
+
+   - Agregar `google-services.json` para Android
+   - Agregar `GoogleService-Info.plist` para iOS
+
+3. Configurar certificados de desarrollo:
+   - Generar certificados para iOS
+   - Configurar keystore para Android
+
+## Consideraciones de Rendimiento
+
+- Lazy loading de componentes pesados
+- Memorización de callbacks y valores
+- Optimización de re-renders
+- Gestión eficiente de memoria
+- Caché de imágenes y datos
+
+## Contribución
+
+1. Crear branch: `feature/nueva-funcionalidad`
+2. Commit cambios: `git commit -m 'feat: nueva funcionalidad'`
+3. Push al branch: `git push origin feature/nueva-funcionalidad`
+4. Crear Pull Request
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para detalles.
