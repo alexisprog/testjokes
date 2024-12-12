@@ -2,11 +2,9 @@ import React from "react";
 import { Tabs } from "expo-router";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { useColorScheme } from "@/src/hooks/useColorScheme";
-import { CustomTabBar } from "@/src/components/ui/CustomTabBar";
+import { CustomTabBar } from "@/src/components/CustomTabBar";
 
 export default function TabsLayout() {
-  const { theme } = useColorScheme();
   return (
     <Tabs
       tabBar={(props) => <CustomTabBar {...props} />}
