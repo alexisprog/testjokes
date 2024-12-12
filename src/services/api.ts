@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useErrorStore } from "@/src/store/useErrorStore";
+import { useNetworkStore } from "@/src/store/useNetworkStore";
 
 const BASE_URL = "https://api.chucknorris.io/jokes";
 
@@ -134,29 +135,28 @@ export const apiService = new ApiService();
 
 // Hook personalizado para usar el servicio
 export const useApi = () => {
+  const isConnected = useNetworkStore((state) => state.isConnected);
+
+  const handleRequest = async <T>(request: Promise<T>): Promise<T> => {
+    if (!isConnected) {
+      throw new Error("No hay conexión a Internet");
+    }
+
+    try {
+      return await request;
+    } catch (error) {
+      if (!navigator.onLine) {
+        throw new Error("No hay conexión a Internet");
+      }
+      throw error;
+    }
+  };
+
   return {
-    getRandomJoke: apiService.getRandomJoke.bind(apiService),
-    getJokeByCategory: apiService.getJokeByCategory.bind(apiService),
-    searchJokes: apiService.searchJokes.bind(apiService),
-    getCategories: apiService.getCategories.bind(apiService),
-    request: apiService.request.bind(apiService),
+    getCategories: () => handleRequest(apiService.getCategories()),
+    getJokeByCategory: (category: string) =>
+      handleRequest(apiService.getJokeByCategory(category)),
+    getRandomJoke: () => handleRequest(apiService.getRandomJoke()),
+    searchJokes: (query: string) => handleRequest(apiService.searchJokes(query)),
   };
 };
-
-// Ejemplo de uso:
-/*
-const { getRandomJoke, searchJokes } = useApi();
-
-// Obtener un chiste aleatorio
-const joke = await getRandomJoke();
-
-// Buscar chistes
-const results = await searchJokes("dog");
-
-// Usar el método genérico
-const customData = await request<CustomType>({
-  method: "POST",
-  url: "/custom-endpoint",
-  data: { foo: "bar" }
-});
-*/

@@ -50,7 +50,10 @@ export const FavoritesView = () => {
           data={favorites}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={[
+            styles.listContent,
+            Platform.OS === "ios" ? styles.listContentIOS : null,
+          ]}
           ListEmptyComponent={ListEmptyComponent}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     marginVertical: 16,
-    marginTop: Platform.OS === 'ios' ? 16 : 0,
+    marginTop: Platform.OS === "ios" ? 16 : 0,
   },
   listContent: {
     flexGrow: 1,
@@ -88,5 +91,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 8,
     opacity: 0.7,
+  },
+  listContentIOS: {
+    paddingBottom: 110,
   },
 });

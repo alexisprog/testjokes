@@ -9,6 +9,9 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaWrapper } from "@/src/components/SafeAreaWrapper";
 import { ErrorDialog } from "@/src/components/ErrorDialog";
+import { NetworkStatus } from "@/src/components/NetworkStatus";
+import NetInfo from "@react-native-community/netinfo";
+import { useNetworkStore } from "@/src/store/useNetworkStore";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -24,6 +27,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { theme } = useColorScheme();
+  const setIsConnected = useNetworkStore((state) => state.setIsConnected);
 
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -50,6 +54,14 @@ export default function RootLayout() {
 
   useEffect(() => {
     registerForPushNotificationsAsync();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsConnected(!!state.isConnected);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   async function registerForPushNotificationsAsync() {
@@ -91,6 +103,7 @@ export default function RootLayout() {
           <SafeAreaWrapper>
             <Slot />
             <ErrorDialog />
+            <NetworkStatus />
           </SafeAreaWrapper>
         </GestureHandlerRootView>
       </PaperProvider>

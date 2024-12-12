@@ -1,5 +1,5 @@
 import { FavoritesView } from "@/src/modules/favorites/FavoritesView";
 
-export default function ExplorePage() {
+export default function FavoritesPage() {
   return <FavoritesView />;
 }

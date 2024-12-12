@@ -1,5 +1,5 @@
-import { FavoritesView } from "@/src/modules/favorites/FavoritesView";
+import { SearchView } from "@/src/modules/search/SearchView";
 
 export default function SearchPage() {
-  return <FavoritesView />;
+  return <SearchView />;
 }

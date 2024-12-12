@@ -1,8 +1,10 @@
-import * as React from "react";
-import { StyleSheet, Animated } from "react-native";
-import { Text, Surface, IconButton } from "react-native-paper";
+import React from "react";
+import { StyleSheet, Animated, View } from "react-native";
+import { Surface, Text, IconButton } from "react-native-paper";
 import { Swipeable } from "react-native-gesture-handler";
 import { Joke } from "@/src/services/api";
+import { Share } from "react-native";
+import { useColorScheme } from "@/src/hooks/useColorScheme";
 
 interface FavoriteItemProps {
   joke: Joke;
@@ -11,6 +13,25 @@ interface FavoriteItemProps {
 
 export const FavoriteItem = React.memo(
   ({ joke, onRemove }: FavoriteItemProps) => {
+    const { theme } = useColorScheme();
+
+    const handleShare = async () => {
+      try {
+        const message = `${joke.value}\n\n${
+          joke.categories.length > 0
+            ? `Categorías: ${joke.categories.join(", ")}`
+            : "Sin categoría"
+        }`;
+
+        await Share.share({
+          message,
+          title: "Compartir chiste de Chuck Norris",
+        });
+      } catch (error) {
+        console.error("Error sharing joke:", error);
+      }
+    };
+
     const renderRightActions = (
       progress: Animated.AnimatedInterpolation<number>,
       dragX: Animated.AnimatedInterpolation<number>
@@ -22,23 +43,42 @@ export const FavoriteItem = React.memo(
       });
 
       return (
-        <Animated.View
-          style={[
-            styles.deleteAction,
-            {
-              transform: [{ scale }],
-            },
-          ]}
-        >
-          <IconButton
-            icon="delete"
-            mode="contained"
-            containerColor="red"
-            iconColor="white"
-            size={24}
-            onPress={() => onRemove(joke.id)}
-          />
-        </Animated.View>
+        <View style={styles.actionsContainer}>
+          <Animated.View
+            style={[
+              styles.actionButton,
+              {
+                transform: [{ scale }],
+              },
+            ]}
+          >
+            <IconButton
+              icon="share-variant"
+              mode="contained"
+              containerColor={theme.colors.tertiary}
+              iconColor={theme.colors.background}
+              size={24}
+              onPress={handleShare}
+            />
+          </Animated.View>
+          <Animated.View
+            style={[
+              styles.actionButton,
+              {
+                transform: [{ scale }],
+              },
+            ]}
+          >
+            <IconButton
+              icon="delete"
+              mode="contained"
+              containerColor={theme.colors.onErrorContainer}
+              iconColor={theme.colors.background}
+              size={24}
+              onPress={() => onRemove(joke.id)}
+            />
+          </Animated.View>
+        </View>
       );
     };
 
@@ -78,10 +118,15 @@ const styles = StyleSheet.create({
   jokeText: {
     lineHeight: 20,
   },
-  deleteAction: {
+  actionsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 8,
+  },
+  actionButton: {
     justifyContent: "center",
     alignItems: "center",
-    width: 80,
+    width: 50,
     height: "100%",
   },
 });
