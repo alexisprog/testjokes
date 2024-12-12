@@ -29,6 +29,7 @@ export const useLoginView = () => {
     checkBiometricAvailability,
     hasBiometricCredentials,
     clearStoredCredentials,
+    isAuthenticated
   } = useAuthStore();
   const [isBiometricAvailable, setIsBiometricAvailable] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -85,9 +86,10 @@ export const useLoginView = () => {
     loading,
     isBiometricAvailable,
     hasBiometricCredentials,
+    isAuthenticated,
+    showForm,
     handleBiometricAuth,
     handleForgetUser,
-    showForm,
     setShowForm,
   };
 };

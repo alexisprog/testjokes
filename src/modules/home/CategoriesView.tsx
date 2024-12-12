@@ -1,76 +1,60 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { ActivityIndicator, Chip, Text } from "react-native-paper";
-import { Joke, useApi } from "@/src/services/api";
 import { ThemedView } from "@/src/components/ThemedView";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { JokeDialog } from "./components/JokeDialog";
+import { useCategoriesView } from "./hooks/useCategoriesView";
 
 export const CategoriesView = () => {
-  const { getCategories, getJokeByCategory } = useApi();
-  const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [currentJoke, setCurrentJoke] = useState<Joke | null>(null);
-  const [dialogVisible, setDialogVisible] = useState(false);
-
-  const fetchCategories = useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await getCategories();
-      setCategories(data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const {
+    categories,
+    loading,
+    currentJoke,
+    dialogVisible,
+    subtitle,
+    fetchCategories,
+    handleCategoryPress,
+    setDialogVisible,
+  } = useCategoriesView();
 
   useEffect(() => {
     fetchCategories();
-  }, [fetchCategories]);
-
-  const handleCategoryPress = async (category: string) => {
-    try {
-      setSelectedCategory(category);
-      const joke = await getJokeByCategory(category);
-      setCurrentJoke(joke);
-      setDialogVisible(true);
-    } catch (error) {
-      console.error("Error fetching joke:", error);
-    }
-  };
+  }, []);
 
   return (
     <ThemedView style={styles.container}>
       <Text variant="titleLarge" style={styles.title}>
         Categorías de Chistes
       </Text>
-      <ThemedView style={styles.chipContainer}>
-        {categories.map((category) => (
-          <Chip
-            key={category}
-            mode="flat"
-            onPress={() => handleCategoryPress(category)}
-            style={styles.chip}
-            showSelectedOverlay
-            elevated
-          >
-            <Text variant="bodyLarge" style={styles.title}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </Text>
-          </Chip>
-        ))}
-      </ThemedView>
-      {loading && (
-        <ThemedView style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Cargando categorías...</Text>
+      {!loading && (
+        <ThemedView>
+          <Text variant="bodyMedium" style={styles.subtitle}>
+            {subtitle}
+          </Text>
+          <ThemedView style={styles.chipContainer}>
+            {categories.map((category) => (
+              <Chip
+                key={category}
+                mode="flat"
+                onPress={() => handleCategoryPress(category)}
+                style={styles.chip}
+                showSelectedOverlay
+                elevated
+              >
+                <Text variant="bodyLarge">
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </Text>
+              </Chip>
+            ))}
+          </ThemedView>
         </ThemedView>
       )}
-      {categories.length === 0 && !loading && (
-        <ThemedView style={styles.emptyContainer}>
-          <Text>No hay categorías disponibles</Text>
+
+      {loading && (
+        <ThemedView style={styles.loadingContainer}>
+          <ActivityIndicator size="large" />
+          <Text style={styles.loadingText}>Cargando categorías...</Text>
         </ThemedView>
       )}
       <JokeDialog
@@ -90,6 +74,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  subtitle: {
     marginBottom: 26,
     textAlign: "center",
   },
@@ -104,12 +92,10 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   loadingContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   emptyContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

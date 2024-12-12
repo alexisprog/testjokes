@@ -114,22 +114,15 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
-    borderRadius: 32,
+    borderRadius: 6,
     marginHorizontal: 4,
-    overflow: "hidden",
   },
   tabButton: {
-    flexDirection: "row",
+    padding: 4,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    gap: 8,
   },
   tabButtonActive: {
     backgroundColor: "transparent",
-  },
-  label: {
-    marginLeft: 4,
   },
 });

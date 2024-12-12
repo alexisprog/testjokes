@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import { TextInput, Button, HelperText } from "react-native-paper";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { useLoginView } from "./hooks/useLoginView";
 import { ThemedView } from "@/src/components/ThemedView";
 import { BiometricAccess } from "./components/BiometricAccess";
@@ -17,9 +17,14 @@ export const LoginView = () => {
     handleForgetUser,
     showForm,
     setShowForm,
+    isAuthenticated,
   } = useLoginView();
   const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
     formik;
+
+  if (isAuthenticated) {
+    return <Redirect href="/" />;
+  }
 
   if (isBiometricAvailable && hasBiometricCredentials && !showForm) {
     return (
