@@ -1,44 +1,35 @@
-import { Redirect, Tabs } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
-import { HapticTab } from "@/src/components/HapticTab";
-import { IconSymbol } from "@/src/components/ui/IconSymbol";
-import TabBarBackground from "@/src/components/ui/TabBarBackground";
-import { Colors } from "@/src/constants/Colors";
+import { Tabs } from "expo-router";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
+import { CustomTabBar } from "@/src/components/ui/CustomTabBar";
 
 export default function TabsLayout() {
-  const { colorScheme } = useColorScheme();
+  const { theme } = useColorScheme();
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: "absolute",
-          },
-          default: {},
-        }),
+        tabBarShowLabel: true,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Inicio",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+          title: "Categorias",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6 name="rectangle-list" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+          title: "Favoritos",
+          tabBarIcon: ({ color, size }) => (
+            <Fontisto name="favorite" size={size} color={color} />
           ),
         }}
       />
