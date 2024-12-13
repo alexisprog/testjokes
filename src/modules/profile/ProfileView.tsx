@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, ScrollView, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { Button, Divider, Surface, Text, useTheme } from "react-native-paper";
 import { ThemedView } from "@/src/components/ThemedView";
 import { useProfileView } from "./hooks/useProfileView";
 import { ProfileHeader } from "./components/ProfileHeader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ThemeSelector } from "@/src/components/ThemeSelector";
 
 export const ProfileView = () => {
   const { user, loading, handleSignOut } = useProfileView();
@@ -41,10 +42,23 @@ export const ProfileView = () => {
           />
           <Text variant="bodyMedium" style={styles.infoText}>
             Cuenta creada el{" "}
-            {new Date(user.metadata.creationTime).toLocaleDateString()}
+            {new Date(
+              user.metadata.creationTime || Date.now()
+            ).toLocaleDateString()}
           </Text>
         </ThemedView>
       </Surface>
+
+      <Surface
+        style={[styles.infoContainer, styles.themeContainer]}
+        elevation={1}
+      >
+        <Text variant="titleMedium" style={styles.sectionTitle}>
+          Tema de la aplicación
+        </Text>
+        <ThemeSelector />
+      </Surface>
+
       <Button
         mode="contained"
         onPress={handleSignOut}
@@ -90,5 +104,8 @@ const styles = StyleSheet.create({
   signOutButton: {
     marginTop: "auto",
     marginBottom: 120,
+  },
+  themeContainer: {
+    marginBottom: 24,
   },
 });

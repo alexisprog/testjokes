@@ -1,5 +1,6 @@
 import { useColorScheme as _useColorScheme } from "react-native";
 import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
+import { useThemeStore } from "@/src/store/useThemeStore";
 
 export const CustomLightTheme = {
   ...MD3LightTheme,
@@ -98,12 +99,20 @@ export const CustomDarkTheme = {
 export type AppTheme = typeof CustomLightTheme;
 
 export function useColorScheme() {
-  const colorScheme = _useColorScheme();
-  const theme = colorScheme === "dark" ? CustomDarkTheme : CustomLightTheme;
+  const systemColorScheme = _useColorScheme();
+  const { themeMode } = useThemeStore();
+
+  // Determinar el tema basado en el modo seleccionado
+  const isDarkMode =
+    themeMode === "system"
+      ? systemColorScheme === "dark"
+      : themeMode === "dark";
+
+  const theme = isDarkMode ? CustomDarkTheme : CustomLightTheme;
 
   return {
-    colorScheme,
+    colorScheme: isDarkMode ? "dark" : "light",
     theme,
-    isDarkMode: colorScheme === "dark",
+    isDarkMode,
   };
 }

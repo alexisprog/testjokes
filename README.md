@@ -6,8 +6,8 @@ Aplicación móvil desarrollada con Expo que consume la API de Chuck Norris para
 
 - Node.js: v18.x o superior
 - npm: v9.x o superior
-- Expo SDK: 50.0.0
-- React Native: 0.73.2
+- Expo SDK: 52.0.18
+- React Native: 0.76.5
 - TypeScript: 5.3.0
 
 ## Dependencias Principales
@@ -135,7 +135,7 @@ app/                   # Rutas de la aplicación (Expo Router)
 1. Clonar el repositorio:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/alexisprog/testjokes.git
 ```
 
 2. Instalar dependencias:
@@ -144,10 +144,10 @@ git clone <repository-url>
 npm install
 ```
 
-3. Iniciar el proyecto:
+3. Iniciar el proyecto (Android o iOS):
 
 ```bash
-npx expo start
+npm run android | npm run ios
 ```
 
 ## Scripts Disponibles
@@ -155,29 +155,16 @@ npx expo start
 - `npm start`: Inicia el servidor de desarrollo
 - `npm run android`: Ejecuta la app en Android
 - `npm run ios`: Ejecuta la app en iOS
-- `npm run web`: Ejecuta la versión web
-- `npm run lint`: Ejecuta el linter
-- `npm run test`: Ejecuta los tests
 
 ## Configuración de Desarrollo
 
-1. Configurar variables de entorno:
-
-   - Crear archivo `.env` basado en `.env.example`
+1. Configurar Firebase:
    - Configurar credenciales de Firebase
-
-2. Configurar Firebase:
-
    - Agregar `google-services.json` para Android
    - Agregar `GoogleService-Info.plist` para iOS
 
-3. Configurar certificados de desarrollo:
-   - Generar certificados para iOS
-   - Configurar keystore para Android
-
 ## Consideraciones de Rendimiento
 
-- Lazy loading de componentes pesados
 - Memorización de callbacks y valores
 - Optimización de re-renders
 - Gestión eficiente de memoria
