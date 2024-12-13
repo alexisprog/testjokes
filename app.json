@@ -22,7 +22,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#00796b"
       },
-      "package": "com.anonymous.TestJokes"
+      "package": "com.anonymous.TestJokes",
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -59,6 +63,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c6eaa841-b40f-41db-9432-43a8da637a00"
+      }
     }
   }
 }
