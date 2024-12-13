@@ -177,6 +177,11 @@ npm run android | npm run ios
 3. Push al branch: `git push origin feature/nueva-funcionalidad`
 4. Crear Pull Request
 
+## Referencias fotograficas
+
+https://www.cleverpdf.com/377750/images.gif
+![gif-jokes](https://github.com/user-attachments/assets/c788db01-7704-45af-8ff0-9f33d1d7e0d5)
+
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para detalles.
