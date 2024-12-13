@@ -1,12 +1,16 @@
 import { useState, useCallback, useMemo } from "react";
 import { Joke, useApi } from "@/src/services/api";
 import { useDebouncedCallback } from "use-debounce";
+import { useCategoriesStore } from "@/src/store/useCategoriesStore";
 
 export const useSearchView = () => {
   const { searchJokes } = useApi();
   const [searchQuery, setSearchQuery] = useState("");
   const [jokes, setJokes] = useState<Joke[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const { favorites, removeFromFavorites, addToFavorites } =
+    useCategoriesStore();
 
   const searchError = useMemo(() => {
     if (!searchQuery) return "";
@@ -51,13 +55,19 @@ export const useSearchView = () => {
     setJokes([]);
   }, []);
 
+  const handleAddFavorite = useCallback(async (joke: Joke) => {
+    await addToFavorites(joke);
+  }, []);
+
   return {
     searchQuery,
     jokes,
     loading,
     searchError,
     isValidSearch,
+    favorites,
     handleSearch,
     handleClear,
+    handleAddFavorite,
   };
 };

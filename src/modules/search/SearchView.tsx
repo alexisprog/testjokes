@@ -20,11 +20,19 @@ export const SearchView = () => {
     isValidSearch,
     handleSearch,
     handleClear,
+    handleAddFavorite,
+    favorites,
   } = useSearchView();
 
   const renderItem = useCallback(
-    ({ item }: { item: Joke }) => <JokeItem joke={item} />,
-    []
+    ({ item }: { item: Joke }) => (
+      <JokeItem
+        joke={item}
+        onAddToFavorites={handleAddFavorite}
+        favorites={favorites}
+      />
+    ),
+    [handleAddFavorite, favorites]
   );
 
   const keyExtractor = useCallback((item: Joke) => item.id, []);
